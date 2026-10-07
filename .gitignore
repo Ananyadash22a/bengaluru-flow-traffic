@@ -1,0 +1,11 @@
+node_modules/
+frontend/dist/
+backend/backend1/target/
+backend/backend1/.mvn/wrapper/maven-wrapper.jar
+.env
+.env.*
+!.env.example
+*.log
+.idea/
+.vscode/*.log
+Thumbs.db

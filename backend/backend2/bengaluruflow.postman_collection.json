@@ -1,0 +1,82 @@
+{
+  "info": {
+    "name": "BengaluruFlow API",
+    "description": "Local API requests for simulated Bengaluru traffic. Data is fictional; no live traffic provider is connected.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080/api" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "List traffic zones",
+      "request": { "method": "GET", "url": "{{baseUrl}}/traffic/zones" }
+    },
+    {
+      "name": "Register demo user",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 201) pm.collectionVariables.set('token', pm.response.json().token);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"portfolio@example.com\",\"password\":\"TrafficDemo42\"}"
+        },
+        "url": "{{baseUrl}}/auth/register"
+      }
+    },
+    {
+      "name": "Report incident",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"type\":\"Accident\",\"location\":\"Marathahalli Bridge\",\"severity\":\"HIGH\",\"description\":\"Simulated vehicle collision blocking one lane.\"}"
+        },
+        "url": "{{baseUrl}}/incidents"
+      }
+    },
+    {
+      "name": "Optimize emergency route",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"origin\":\"Whitefield\",\"destination\":\"Manipal Hospital\",\"priority\":\"HIGH\"}"
+        },
+        "url": "{{baseUrl}}/routes/optimize"
+      }
+    },
+    {
+      "name": "Update traffic zone (operator only)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"congestion\":55,\"speed\":28,\"delay\":8}"
+        },
+        "url": "{{baseUrl}}/traffic/zones/1"
+      }
+    },
+    {
+      "name": "Traffic analytics",
+      "request": { "method": "GET", "url": "{{baseUrl}}/analytics/traffic" }
+    }
+  ]
+}
